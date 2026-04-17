@@ -1,0 +1,35 @@
+name: Node.js CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Use Node.js 18.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18.x
+        cache: 'npm'
+
+    - name: Install Dependencies
+      run: npm ci
+
+    - name: Run Tests
+      run: npm test
+
+    - name: Build Docker Image
+      run: docker build -t nodejs-ci-cd-app .
+
+    - name: Deploy to Cloud Platform
+      run: |
+        echo "Mock deployment step to a cloud platform"
+        echo "Successfully deployed the Docker image to the target environment."
